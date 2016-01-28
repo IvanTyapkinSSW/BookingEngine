@@ -1,0 +1,119 @@
+﻿<div class="row form-group">
+    <div class="col-md-6">
+        <div class="row top-buffer">
+            <h4>Booking Expert</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-3"><img src="" alt="X" ng-src="/Content/Images/{{expert.ImageUrl}}" /></div>
+            <div class="col-md-9">
+                <div><h2 style="margin-top:0"><span ng-bind="expert.FirstName"></span>&nbsp;<span ng-bind="expert.LastName"></span></h2> </div>
+                <div class="top-buffer small" style="line-height: 1.5;">
+                    <span ng-bind-html="expert.Description"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row top-buffer"></div>
+        <div class="row top-buffer">
+            <div class="col-md-7"></div>
+            <div class="col-md-2 text-nowrap">Hourly Rate</div>
+            <div class="col-md-3"><input type='text' readonly="readonly" class="form-control disabled input-sm" ng-model="expert.HourlyRateFormatted" /></div>
+
+        </div>
+        <div class="row top-buffer">
+            <h4>Session Details</h4>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-3">Date</div>
+            <div class="col-md-4">
+                <div class="input-group date" datetimepicker
+                     datetimepicker-options="{format:'DD/MM/YYYY'}"
+                     ng-model="booking.date">
+                    <input type='text' class="form-control input-sm"
+                           placeholder="dd/mm/yyyy" />
+                    <span class="input-group-addon" style="padding-left:7px;padding-right:7px">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-3">Start Time</div>
+            <div class="col-md-4">
+                <select class="form-control input-sm" ng-change="startchange()" ng-model="booking.starttime" ng-options="ss.StartTimeFormatted for ss in sessionStarts">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="col-md-2 text-nowrap">Time Zone</div>
+            <div class="col-md-3"><input type="text" readonly="readonly" class="form-control disabled input-sm" ng-model="booking.timezoneGMT" /></div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-3">Duration</div>
+            <div class="col-md-4">
+                <select class="form-control input-sm" ng-change="durationchange()" ng-model="booking.duration">
+                    <option value="1">1 Hour(s)</option>
+                    <option value="2">2 Hour(s)</option>
+                </select>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-3">End Time</div>
+            <div class="col-md-4">
+                <input type="text" readonly="readonly" class="form-control disabled input-sm" ng-model="booking.endtime" />
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-12">
+                Message to <span ng-bind="expert.FirstName"></span>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-12"><textarea rows="4" placeholder="Please provide details on nature of the session being booked" class="form-control input-sm" style="min-width: 100%"></textarea></div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-4">
+                <p>
+                    <a href="javascript:alert('save');" class="btn btn-primary btn-sm btn-shaped">Book</a>
+                    <a href="javascript:alert('cancel');" class="btn btn-default btn-sm btn-shaped">Cancel</a>
+                </p>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+        <div class="row top-buffer"><h4>Times Available on <span ng-bind="booking.date"></span></h4></div>
+        <div class="row ">
+            <div class="col-md-9 left-buffer">
+                <div class="row grid-header">
+                    <div class="col-border col-sm-4">Start</div>
+                    <div class="col-border col-sm-4">Duration</div>
+                    <div class="col-border col-last col-sm-4">End</div>
+                </div>
+                <div ng-repeat="a in availability" class="row">
+                    <div class="col-border col-sm-4 right text-right" ng-bind="a.StartTimeLocal"></div>
+                    <div class="col-border col-sm-4 right text-right" ng-bind="a.DurationFormatted"></div>
+                    <div class="col-border col-last col-sm-4 text-right" ng-bind="a.EndTimeLocal"></div>
+                </div>
+                <div ng-show="availability.length==0" class="row">
+                    <div class="col-border col-last col-sm-12 ">No available timeslots found</div>
+                </div>
+                <div class="row">
+                    <div class="row-last col-sm-12"></div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-12 text-info">* All times are <span ng-bind="booking.timezoneName"></span> (<span ng-bind="booking.timezoneGMT"></span>)</div>
+        </div>
+    </div>
+
+</div>
+<!--<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({ format: "DD/MM/YYYY" });
+    });
+</script>-->

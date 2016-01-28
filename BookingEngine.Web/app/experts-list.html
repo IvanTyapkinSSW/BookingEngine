@@ -1,0 +1,26 @@
+﻿<div class="form-group top-buffer">
+    <div class="row " style="padding-top:20px">
+        <div class="col-md-6">
+            <div class="row grid-header">
+                <div class="col-md-3 col-border">ID</div>
+                <div class="col-md-3 col-border">First Name</div>
+                <div class="col-md-3 col-border">Last Name</div>
+                <div class="col-md-3 col-border col-last">Rate</div>
+            </div>
+            <div class="row" ng-repeat="e in experts">
+                <div class="col-md-3 col-border"><a href="#/{{e.Code}}" ng-bind="e.Code"></a></div>
+                <div class="col-md-3 col-border" ng-bind="e.FirstName"></div>
+                <div class="col-md-3 col-border" ng-bind="e.LastName"></div>
+                <div class="col-md-3 col-border col-last text-right" ng-bind="e.HourlyRateFormatted"></div>
+            </div>
+            <div class="row">
+                <div class="row-last col-sm-12"></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+</div>
+
+
+

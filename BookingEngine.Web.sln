@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23103.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingEngine.Web", "BookingEngine.Web\BookingEngine.Web.csproj", "{4B5F9104-C0BF-4826-954C-C3F2C648840A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{CEB548E8-B0EA-46BA-B86D-A0B509828DAB}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureVMPublishModule.psm1 = PublishScripts\AzureVMPublishModule.psm1
+		PublishScripts\Publish-WebApplicationVM.ps1 = PublishScripts\Publish-WebApplicationVM.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{71613D98-A776-40A0-818A-A8B7391271D2}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\BookingEngineWeb-WAWS-dev.json = PublishScripts\Configurations\BookingEngineWeb-WAWS-dev.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingEngine.Data", "BookingEngine.Data\BookingEngine.Data.csproj", "{5B307D44-5A47-4FFF-B51A-A0AD25601972}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingEngine.Tests", "BookingEngine.Tests\BookingEngine.Tests.csproj", "{2F68028F-6A56-4DF8-A042-2815082E55D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B5F9104-C0BF-4826-954C-C3F2C648840A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5F9104-C0BF-4826-954C-C3F2C648840A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B5F9104-C0BF-4826-954C-C3F2C648840A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B5F9104-C0BF-4826-954C-C3F2C648840A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B307D44-5A47-4FFF-B51A-A0AD25601972}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B307D44-5A47-4FFF-B51A-A0AD25601972}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B307D44-5A47-4FFF-B51A-A0AD25601972}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B307D44-5A47-4FFF-B51A-A0AD25601972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F68028F-6A56-4DF8-A042-2815082E55D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F68028F-6A56-4DF8-A042-2815082E55D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F68028F-6A56-4DF8-A042-2815082E55D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F68028F-6A56-4DF8-A042-2815082E55D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71613D98-A776-40A0-818A-A8B7391271D2} = {CEB548E8-B0EA-46BA-B86D-A0B509828DAB}
+	EndGlobalSection
+EndGlobal
