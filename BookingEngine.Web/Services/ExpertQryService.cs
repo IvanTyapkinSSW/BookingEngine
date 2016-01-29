@@ -51,30 +51,32 @@ namespace BookingEngine.Web.Services
 
                 pm.Availability = new List<AvailabilityModel>();
 
-                var morn = new AvailabilityModel() { Duration = 4, DurationFormatted = "4 Hour(s)", StartDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 9, 0, 0), EndDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 13, 0, 0), StartTimeLocal = "9:00 AM", EndTimeLocal = "1:00PM" };
-                var even = new AvailabilityModel() { Duration = 4, DurationFormatted = "4 Hour(s)", StartDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 14, 0, 0), EndDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 18, 0, 0), StartTimeLocal = "2:00 PM", EndTimeLocal = "6:00PM" };
-                pm.Availability.Add(morn);
-                pm.Availability.Add(even);
-
-                int i = 0;
-                foreach (var a in pm.Availability)
+                if (dateLocal.DayOfWeek != DayOfWeek.Sunday && dateLocal.DayOfWeek != DayOfWeek.Saturday)
                 {
-                    a.SessionStarts = new List<SessionStartModel>();
+                    var morn = new AvailabilityModel() { Duration = 4, StartDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 9, 0, 0), EndDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 13, 0, 0) };
+                    var even = new AvailabilityModel() { Duration = 4, StartDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 14, 0, 0), EndDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 18, 0, 0) };
+                    pm.Availability.Add(morn);
+                    pm.Availability.Add(even);
 
-                    for (DateTime dt = a.StartDateTimeUtc; dt < a.EndDateTimeUtc; dt = dt.AddHours(1))
+                    int i = 0;
+                    foreach (var a in pm.Availability)
                     {
-                        i++;
-                        a.SessionStarts.Add(new SessionStartModel()
+                        a.SessionStarts = new List<SessionStartModel>();
+
+                        for (DateTime dt = a.StartDateTimeUtc; dt < a.EndDateTimeUtc; dt = dt.AddHours(1))
                         {
-                            SessionStartId = i,
-                            StartTimeLocal = dt,
-                            StartTimeFormatted = dt.ToString("hh:mm tt")
-                        });
-                        
+                            i++;
+                            a.SessionStarts.Add(new SessionStartModel()
+                            {
+                                SessionStartId = i,
+                                StartDateTimeUtc = dt       
+                            });
+
+                        }
                     }
+
+
                 }
-
-
 
                 return pm;
             }

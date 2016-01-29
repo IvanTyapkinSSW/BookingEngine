@@ -153,6 +153,7 @@
     <Compile Include="Models\ExpertModel.cs" />
     <Compile Include="Models\SessionStartModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AvailabilityQryService.cs" />
     <Compile Include="Services\ExpertQryService.cs" />
   </ItemGroup>
   <ItemGroup>
