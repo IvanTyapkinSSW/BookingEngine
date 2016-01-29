@@ -26,7 +26,7 @@
             <div class="col-md-3">Date</div>
             <div class="col-md-4">
                 <div class="input-group date" datetimepicker
-                     datetimepicker-options="{format:'DD/MM/YYYY'}"
+                     datetimepicker-options="{format:'ddd DD/MM/YYYY'}"
                      ng-model="booking.date"
                      ng-change="datechange()">
                     <input type='text' class="form-control input-sm"
@@ -71,8 +71,8 @@
         <div class="row top-buffer">
             <div class="col-md-4">
                 <p>
-                    <a href="javascript:alert('Next clicked');" class="btn btn-shaped" ng-disabled="isValidModel()==false" ng-class="isValidModel()==false ? 'btn-disabled':'btn-primary'">Next</a>
-                    <a href="javascript:alert('Cancel clicked');" class="btn btn-default btn-sm btn-shaped">Cancel</a>
+                    <a href="#/Booking" class="btn btn-shaped" ng-disabled="isValidModel()==false" ng-class="isValidModel()==false ? 'btn-disabled':'btn-primary'">Next</a>
+                    <a href="#/" class="btn btn-default btn-sm btn-shaped">Cancel</a>
                 </p>
             </div>
             <div class="col-md-8"></div>
@@ -80,7 +80,7 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-5">
-        <div class="row top-buffer"><h4>Times Available on <span ng-bind="booking.date"></span></h4></div>
+        <div class="row top-buffer"><h4>Times Available on <span ng-bind="booking.dateFormatted"></span></h4></div>
         <div class="row ">
             <div class="col-md-9 left-buffer">
                 <div class="row grid-header">

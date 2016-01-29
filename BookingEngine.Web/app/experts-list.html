@@ -8,7 +8,7 @@
                 <div class="col-md-3 col-border col-last">Rate</div>
             </div>
             <div class="row" ng-repeat="e in experts">
-                <div class="col-md-3 col-border"><a href="#/{{e.Code}}" ng-bind="e.Code"></a></div>
+                <div class="col-md-3 col-border"><a href="#/Expert/{{e.Code}}" ng-bind="e.Code"></a></div>
                 <div class="col-md-3 col-border" ng-bind="e.FirstName"></div>
                 <div class="col-md-3 col-border" ng-bind="e.LastName"></div>
                 <div class="col-md-3 col-border col-last text-right" ng-bind="e.HourlyRateFormatted"></div>

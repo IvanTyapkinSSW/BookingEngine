@@ -2,174 +2,201 @@
   "ngRoute",
   "ngSanitize",
   "datetimepicker"
-
 ]);
 
-app.config(['$routeProvider',
-  function ($routeProvider) {
+app.service('bookingService', function () {
+
+    var booking = {};
+
+    var set = function (value) {
+        booking = value;
+    };
+
+    var get = function () {
+        return booking;
+    };
+
+    return {
+        set: set,
+        get: get
+    };
+});
+
+app.config(['$routeProvider','$locationProvider',
+  function ($routeProvider, $locationProvider) {
       $routeProvider.
-        when('/', {
-            templateUrl: '/app/experts-list.html',
-            controller: 'ExpertListCtrl'
-        }).
-           when('/:Code', {
-               templateUrl: '/app/booking.html',
-               controller: 'BookingCtrl'
-           }).
-        otherwise({
-            redirectTo: '/'
-        });
+        when('/', { templateUrl: '/app/experts-list.html', controller: 'ExpertListCtrl'}).
+        when('/Expert/:Code', { templateUrl: '/app/booking.html',controller: 'BookingCtrl'}).
+        when('/Booking/', {templateUrl: '/app/billing.html', controller: 'BillingDetailsCtrl'}).
+        otherwise({ redirectTo: '/' });
+ 
   }]);
 
-//when('/:expertId', {
-//    templateUrl: 'app/booking.html',
-//    controller: 'BookingCtrl'
-//}).
 
 
-app.controller("BookingCtrl", ["$scope", "$http", '$routeParams', "$filter", function ($scope, $http, $routeParams, $filter) {
 
-    $scope.init = function () {
-        $scope.code = $routeParams.Code;
+app.controller("BookingCtrl",
+            ["$scope", "$http", '$routeParams', "$filter", "bookingService",
+ function ($scope, $http, $routeParams, $filter, bookingService) {
 
-        $scope.expert = { isEmpty: true };
-        $scope.booking = {};
-        $scope.availability = [];
-        $scope.sessionStarts = [];
-        $scope.durations = [];
+     $scope.$watch("booking.date", function (newValue, oldValue) {
+         $scope.booking.dateFormatted = moment($scope.booking.date, "DD/MM/YYYY").format("ddd DD/MM/YYYY");
+     });
 
-        var dt = new Date();
-        $scope.booking.date = moment(dt).format("DD/MM/YYYY");
-        $scope.booking.starttime = "";
-        $scope.booking.endtime = "";
-        $scope.booking.timezoneOffset = -dt.getTimezoneOffset() / 60;
-        $scope.booking.timezoneName = /\((.*)\)/.exec(dt.toString())[1];
-        $scope.booking.timezoneGMT = "GMT " + ($scope.booking.timezoneOffset < 0 ? "-" : "+") + Math.abs($scope.booking.timezoneOffset);
-    };
+     $scope.init = function () {
+         $scope.code = $routeParams.Code;
 
-    $scope.startchange = function () {
-        $scope.recalculateDurations();
-        $scope.recalculateEndTime();
+         $scope.expert = { isEmpty: true };
+         $scope.booking = {};
+         $scope.availability = [];
+         $scope.sessionStarts = [];
+         $scope.durations = [];
 
-        if ($scope.durations.length > 0) {
-            $scope.booking.duration = $scope.durations[0];
-        }
-    };
+         var dt = moment(new Date()).add(1, 'd');
 
-    $scope.durationchange = function () {
-        $scope.recalculateEndTime();
-    };
+         $scope.booking.date = dt.format("DD/MM/YYYY");
+         $scope.booking.starttime = "";
+         $scope.booking.endtime = "";
+         $scope.booking.timezoneOffset = -dt.zone() / 60;
+         $scope.booking.timezoneName = /\((.*)\)/.exec(dt.toDate().toString())[1];
 
-    $scope.recalculateEndTime = function () {
+         $scope.booking.timezoneGMT = "GMT " + ($scope.booking.timezoneOffset < 0 ? "-" : "+") + Math.abs($scope.booking.timezoneOffset);
+     };
 
-        if ($scope.booking.starttime == null) { $scope.booking.endtime = ""; return; }
+     $scope.startchange = function () {
+         $scope.recalculateDurations();
+         $scope.recalculateEndTime();
 
-        var m = moment($scope.booking.starttime.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
-        var hrs = $scope.booking.duration.hours;
-        var end = m.add(hrs, "h");
+         if ($scope.durations.length > 0) {
+             $scope.booking.duration = $scope.durations[0];
+         }
+     };
 
-        $scope.booking.endtime = end.format("hh:mm A");
-    };
+     $scope.durationchange = function () {
+         $scope.recalculateEndTime();
+     };
 
-    $scope.recalculateDurations = function () {
+     $scope.recalculateEndTime = function () {
 
-        if ($scope.booking.starttime == null) { $scope.durations = []; return; }
+         if ($scope.booking.starttime == null) { $scope.booking.endtime = ""; return; }
 
-        var m = moment($scope.booking.starttime.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
+         var m = moment($scope.booking.starttime.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
+         var hrs = $scope.booking.duration.hours;
+         var end = m.add(hrs, "h");
 
-        for (var i = 0; i < $scope.availability.length; i++) {
-            var a = $scope.availability[i];
-            var start = moment(a.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
-            var end = moment(a.EndDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
+         $scope.booking.endtime = end.format("hh:mm A");
+     };
 
-            if (!(m.isSame(start) || m.isBetween(start, end))) continue;
+     $scope.recalculateDurations = function () {
 
-            var count = moment.duration(end.diff(m)).asHours();
+         if ($scope.booking.starttime == null) { $scope.durations = []; return; }
 
-            $scope.loadDurations(count);
-        }
+         var m = moment($scope.booking.starttime.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
 
-    };
+         for (var i = 0; i < $scope.availability.length; i++) {
+             var a = $scope.availability[i];
+             var start = moment(a.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
+             var end = moment(a.EndDateTimeUtc, "YYYY-MM-DDTHH:mm:ss");
 
-    $scope.loadDurations = function (count) {
-        var durations = [];
+             if (!(m.isSame(start) || m.isBetween(start, end))) continue;
 
-        for (var i = 0; i < count; i++) {
-            var hrs = i + 1;
-            var d = { hours: hrs, durationFormatted: hrs + " Hour(s)" };
-            durations.push(d);
-        }
+             var count = moment.duration(end.diff(m)).asHours();
 
-        $scope.durations = durations;
-    };
+             $scope.loadDurations(count);
+         }
 
-    $scope.datechange = function () {
-        var dt = moment($scope.booking.date, "DD/MM/YYYY");
-        $scope.loadAvailability(dt)
-    };
+     };
 
-    $scope.loadAvailability = function (dt) {
+     $scope.loadDurations = function (count) {
+         var durations = [];
 
-        $scope.availability = [];
-        $scope.sessionStarts = [];
+         for (var i = 0; i < count; i++) {
+             var hrs = i + 1;
+             var d = { hours: hrs, durationFormatted: hrs + " Hour(s)" };
+             durations.push(d);
+         }
 
-        var code = $scope.code;
-        var date = moment(dt).format("YYYY-MM-DDTHH:mm:ss");
-        var tmz = $scope.booking.timezoneOffset;
+         $scope.durations = durations;
+     };
 
-        $http.get('/api/expert/' + code + "?date=" + date + "&timeZoneOffset=" + tmz).success(function (data) {
+     $scope.datechange = function () {
+         var dt = moment($scope.booking.date, "ddd DD/MM/YYYY");
+         $scope.loadAvailability(dt)
+     };
 
-            $scope.expert = data;
-            $scope.expert.isEmpty = false;
+     $scope.loadAvailability = function (dt) {
 
-            $scope.availability = data.Availability;
+         $scope.availability = [];
+         $scope.sessionStarts = [];
 
-            var maxDuration = 0;
-            var sessionStarts = [];
-            for (var i = 0; i < data.Availability.length; i++) {
-                var block = data.Availability[i];
+         var code = $scope.code;
+         var date = dt.format("YYYY-MM-DDTHH:mm:ss");
+         var tmz = $scope.booking.timezoneOffset;
 
-                block.StartTimeFormatted = moment(block.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss").format("hh:mm A");
-                block.DurationFormatted = block.Duration + " Hour(s)"
-                block.EndTimeFormatted = moment(block.EndDateTimeUtc, "YYYY-MM-DDTHH:mm:ss").format("hh:mm A");
+         $http.get('/api/expert/' + code + "?date=" + date + "&timeZoneOffset=" + tmz).success(function (data) {
 
-                sessionStarts = sessionStarts.concat(block.SessionStarts);
+             $scope.expert = data;
+             $scope.expert.isEmpty = false;
 
-            }
+             $scope.availability = data.Availability;
 
-            for (var i = 0; i < sessionStarts.length; i++) {
-                var session = sessionStarts[i];
-                session.StartTimeFormatted = moment(session.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss").format("hh:mm A");
-            }
+             var maxDuration = 0;
+             var sessionStarts = [];
+             for (var i = 0; i < data.Availability.length; i++) {
+                 var block = data.Availability[i];
 
-            $scope.sessionStarts = sessionStarts;
-            if (sessionStarts.length > 0) {
-                $scope.booking.starttime = sessionStarts[0];
-            }
+                 block.StartTimeFormatted = moment(block.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss").format("hh:mm A");
+                 block.DurationFormatted = block.Duration + " Hour(s)"
+                 block.EndTimeFormatted = moment(block.EndDateTimeUtc, "YYYY-MM-DDTHH:mm:ss").format("hh:mm A");
 
-            $scope.recalculateDurations();
+                 sessionStarts = sessionStarts.concat(block.SessionStarts);
 
-            if ($scope.durations.length > 0) {
-                $scope.booking.duration = $scope.durations[0];
-            }
+             }
 
-            $scope.recalculateEndTime();
+             for (var i = 0; i < sessionStarts.length; i++) {
+                 var session = sessionStarts[i];
+                 session.StartTimeFormatted = moment(session.StartDateTimeUtc, "YYYY-MM-DDTHH:mm:ss").format("hh:mm A");
+             }
 
-        }).catch(function (data) { alert('error') });
-    };
+             $scope.sessionStarts = sessionStarts;
+             if (sessionStarts.length > 0) {
+                 $scope.booking.starttime = sessionStarts[0];
+             }
 
-    $scope.isValidModel = function () {
-       return $scope.booking.duration != null;
-    };
+             $scope.recalculateDurations();
 
-    $scope.init();
-    $scope.loadAvailability();
+             if ($scope.durations.length > 0) {
+                 $scope.booking.duration = $scope.durations[0];
+             }
 
-}]);
+             $scope.recalculateEndTime();
 
-app.controller("ExpertListCtrl", ["$scope", "$http", function ($scope, $http) {
+         }).catch(function (data) { alert('error') });
+     };
+
+     $scope.isValidModel = function () {
+         return $scope.booking.duration != null;
+     };
+
+     $scope.init();
+
+     var dt = moment($scope.booking.date, "ddd DD/MM/YYYY");
+     $scope.loadAvailability(dt);
+
+ }]);
+
+app.controller("ExpertListCtrl",
+["$scope", "$http",
+function ($scope, $http) {
 
     $http.get('/api/expert').success(function (data) {
         $scope.experts = data;
     }).catch(function (data) { alert('error') });
+
+}]);
+
+app.controller("BillingDetailsCtrl",
+["$scope", "$http", "bookingService",
+function ($scope, $http, bookingService) {
+
 }]);
