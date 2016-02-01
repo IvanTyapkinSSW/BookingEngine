@@ -1,5 +1,61 @@
-﻿<div class="form-group top-buffer">
-    <div class="row">
-        <h4>Billing Details</h4>
+﻿<div class="row form-group top-buffer">
+    <div class="col-md-7">
+        <div class="row" ng-show="code!=null">
+            <h4>Order Details</h4>
+        </div>
+        <div class="row" ng-show="code!=null">
+            <table class="table">
+                <thead>
+                    <tr><th>Item</th><th>Qty</th><th>Price</th><th>Amount</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{expert.FirstName}} {{expert.LastName}} - Consultation
+                            <div class="small text-info" style="padding-left:10px">{{booking.date}} {{booking.starttime.StartTimeFormatted}} - {{booking.endtime}}</div>
+                        </td>
+                        <td>{{expert.HourlyRateFormatted}}</td>
+                        <td>{{booking.duration.durationFormatted}}</td>
+                        <td>{{booking.subtotal}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr><th>Total</><th></th><th></th><th>{{booking.total}}</th></tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="row">
+            <h4>Billing Details</h4>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-2  text-nowrap">First Name</div>
+            <div class="col-md-4">
+                <input type="text" class="form-control input-sm" ng-model="billing.firstName" />
+            </div>
+            <div class="col-md-2 text-nowrap">Last Name</div>
+            <div class="col-md-4">
+                <input type="text" class="form-control input-sm" ng-model="billing.lastName" />
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-2">Email</div>
+            <div class="col-md-4">
+                <input type="text" class="form-control input-sm" ng-model="billing.email" />
+            </div>
+            <div class="col-md-2">Phone</div>
+            <div class="col-md-4">
+                <input type="text" class="form-control input-sm" ng-model="billing.phone" />
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-md-4 top-buffer">
+                <p>
+                    <a ng-click="saveBooking()" class="btn btn-sm btn-shaped" ng-disabled="isValidModel()==false" ng-class="isValidModel()==false ? 'btn-disabled':'btn-primary'">Book</a>
+                    <a ng-click="goBack()" class="btn btn-default btn-sm btn-shaped">Back</a>
+                </p>
+            </div>
+            <div class="col-md-8"></div>
+        </div>
     </div>
+    <div class="col-md-6"></div>
 </div>

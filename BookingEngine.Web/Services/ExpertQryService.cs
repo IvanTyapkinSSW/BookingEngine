@@ -51,7 +51,7 @@ namespace BookingEngine.Web.Services
 
                 pm.Availability = new List<AvailabilityModel>();
 
-                if (dateLocal > DateTime.Today.AddDays(1) && dateLocal.DayOfWeek != DayOfWeek.Sunday && dateLocal.DayOfWeek != DayOfWeek.Saturday)
+                if (dateLocal >= DateTime.Today.AddDays(1) && dateLocal.DayOfWeek != DayOfWeek.Sunday && dateLocal.DayOfWeek != DayOfWeek.Saturday)
                 {
                     var morn = new AvailabilityModel() { Duration = 4, StartDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 9, 0, 0), EndDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 13, 0, 0) };
                     var even = new AvailabilityModel() { Duration = 4, StartDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 14, 0, 0), EndDateTimeUtc = new DateTime(dateLocal.Year, dateLocal.Month, dateLocal.Day, 18, 0, 0) };

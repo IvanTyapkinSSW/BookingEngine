@@ -162,6 +162,7 @@
     <Content Include="app\booking.html" />
     <Content Include="app\calendarmonth.html" />
     <Content Include="app\calendarweek.html" />
+    <Content Include="app\controllers\billingCtrl.js" />
     <Content Include="app\controllers\bookingCtrl.js" />
     <Content Include="app\controllers\datepickerDir.js" />
     <Content Include="app\controllers\expertListCtrl.js" />

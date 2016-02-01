@@ -33,6 +33,7 @@ namespace BookingEngine.Web
                     "~/app/app.js",
                     "~/app/controllers/bookingCtrl.js",
                     "~/app/controllers/expertListCtrl.js",
+                    "~/app/controllers/billingCtrl.js",
                     "~/app/controllers/datepickerDir.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

@@ -66,13 +66,13 @@
             </div>
         </div>
         <div class="row top-buffer">
-            <div class="col-md-12"><textarea rows="4" placeholder="Please provide details on nature of the session being booked" class="form-control input-sm" style="min-width: 100%"></textarea></div>
+            <div class="col-md-12"><textarea rows="4" placeholder="Please provide details on nature of the session being booked" class="form-control input-sm" style="min-width: 100%" ng-model="booking.message"></textarea></div>
         </div>
         <div class="row top-buffer">
             <div class="col-md-4">
                 <p>
-                    <a href="#/Booking" class="btn btn-shaped" ng-disabled="isValidModel()==false" ng-class="isValidModel()==false ? 'btn-disabled':'btn-primary'">Next</a>
-                    <a href="#/" class="btn btn-default btn-sm btn-shaped">Cancel</a>
+                    <a ng-click="saveBooking()" class="btn btn-sm btn-shaped" ng-disabled="isValidModel()==false" ng-class="isValidModel()==false ? 'btn-disabled':'btn-primary'">Next</a>
+                    <a ng-click="goBack()" class="btn btn-default btn-sm btn-shaped">Cancel</a>
                 </p>
             </div>
             <div class="col-md-8"></div>
